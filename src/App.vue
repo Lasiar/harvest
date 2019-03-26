@@ -1,31 +1,54 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
-  </div>
+  <v-app id="inspire">
+    <v-navigation-drawer clipped fixed v-model="drawer" app>
+      <v-list>
+        <v-list-tile
+          router
+          :to="item.to"
+          :key="i"
+          value="true"
+          v-for="(item, i) in items"
+          exact
+        >
+          <v-list-tile-action>
+            <v-icon v-html="item.icon"></v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title v-text="item.title"></v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
+    <v-toolbar
+      app
+      fixed
+      clipped-left
+      scroll-off-screen
+      scroll-target="#scrolling-techniques"
+    >
+      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-title>Harvest</v-toolbar-title>
+    </v-toolbar>
+    <v-content>
+      <router-view />
+    </v-content>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-}
+<script>
+import { mapActions } from "vuex";
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+export default {
+  name: "App",
+  data() {
+    return {
+      drawer: false,
+      items: [{ icon: "", title: "Установка времени отображения", to: "/" }]
+    };
+  },
+  methods: mapActions({ getTable: "getTable" }),
+  created() {
+    this.getTable();
+  }
+};
+</script>
