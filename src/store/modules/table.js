@@ -7,7 +7,16 @@ const state = {
   }
 };
 
-const getters = {};
+const getters = {
+  getUniqCity: state => {
+    return [...new Set(state.table.value.map(item => item.city))].map(city => {
+      return {
+        count: state.table.value.filter(item => item.city === city).length,
+        city: city
+      };
+    });
+  }
+};
 
 const actions = {
   getTable({ commit }) {
@@ -20,6 +29,9 @@ const actions = {
         })
       )
       .catch(e => alert("error get table: " + e.toString()));
+  },
+  countCity(payload) {
+    return this.state.table.table.value.map(item => item[payload]).length;
   }
 };
 

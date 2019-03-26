@@ -43,7 +43,7 @@ export default {
   data() {
     return {
       drawer: false,
-      items: [{ icon: "", title: "Установка времени отображения", to: "/" }]
+      items: [{ icon: "", title: "Города", to: "/chart-city" }]
     };
   },
   methods: mapActions({ getTable: "table/getTable" }),
