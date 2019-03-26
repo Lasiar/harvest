@@ -46,7 +46,7 @@ export default {
       items: [{ icon: "", title: "Установка времени отображения", to: "/" }]
     };
   },
-  methods: mapActions({ getTable: "getTable" }),
+  methods: mapActions({ getTable: "table/getTable" }),
   created() {
     this.getTable();
   }

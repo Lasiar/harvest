@@ -1,6 +1,24 @@
 <template>
-  <div>
-    <v-data-table :headers="headers" :items="table()" class="elevation-1">
+  <v-card>
+    <v-card-title>
+      Информация по машнам
+    </v-card-title>
+    <v-spacer />
+    <v-text-field
+      v-model="search"
+      append-icon="search"
+      label="Поиск"
+      hide-details
+    >
+    </v-text-field>
+
+    <v-data-table
+      :headers="headers"
+      :items="filteredTable"
+      :filter="HandleFilter"
+      :search="search"
+      class="elevation-1"
+    >
       <template v-slot:items="props">
         <td class="text-xs-center">{{ props.item.id }}</td>
         <td class="text-xs-center">{{ props.item.model }}</td>
@@ -13,7 +31,7 @@
         <td class="text-xs-center">{{ props.item.org }}</td>
       </template>
     </v-data-table>
-  </div>
+  </v-card>
 </template>
 
 <script>
@@ -23,6 +41,7 @@ export default {
   name: "Table",
   data() {
     return {
+      search: "",
       headers: [
         {
           text: "#",
@@ -40,8 +59,21 @@ export default {
         { align: "center", sortable: false, text: "Город", value: "city" },
         { align: "center", sortable: false, text: "Провайдер", value: "org" }
       ],
-      ...mapState({ table: state => state.table.value })
+      ...mapState({ table: state => state.table.table.value })
     };
+  },
+  computed: {
+    filteredTable() {
+      if (!isNaN(this.search) && this.search !== "") {
+        return this.table().filter(row => row.id === parseInt(this.search, 10));
+      } else {
+        return this.table().filter(
+          row =>
+            row.city.toLowerCase().includes(this.search.toLowerCase()) ||
+            row.model.toLowerCase().includes(this.search.toLowerCase())
+        );
+      }
+    }
   }
 };
 </script>
