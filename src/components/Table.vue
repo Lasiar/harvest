@@ -58,22 +58,22 @@ export default {
         },
         { align: "center", sortable: false, text: "Город", value: "city" },
         { align: "center", sortable: false, text: "Провайдер", value: "org" }
-      ],
-      ...mapState({ table: state => state.table.table.value })
+      ]
     };
   },
   computed: {
     filteredTable() {
       if (!isNaN(this.search) && this.search !== "") {
-        return this.table().filter(row => row.id === parseInt(this.search, 10));
+        return this.table.filter(row => row.id === parseInt(this.search, 10));
       } else {
-        return this.table().filter(
+        return this.table.filter(
           row =>
             row.city.toLowerCase().includes(this.search.toLowerCase()) ||
             row.model.toLowerCase().includes(this.search.toLowerCase())
         );
       }
-    }
+    },
+    ...mapState({ table: state => state.table.table.value })
   }
 };
 </script>
